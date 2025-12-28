@@ -1,13 +1,15 @@
 import { useState, useRef } from "react";
 import { useLocation } from "wouter";
-import { motion } from "framer-motion";
-import { Upload, Sparkles, FileText, ArrowRight, BrainCircuit, AlertCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Upload, Sparkles, FileText, ArrowRight, BrainCircuit, AlertCircle, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateAnalysis } from "@/hooks/use-analysis";
 import { Navbar } from "@/components/layout/Navbar";
 import { cleanTranscript } from "@/utils/transcriptParser";
 import { useToast } from "@/hooks/use-toast";
+import { SAMPLE_TRANSCRIPTS } from "@/utils/samples";
+import { DemoGuide } from "@/components/DemoGuide";
 
 export default function Landing() {
   const [text, setText] = useState("");
@@ -21,6 +23,15 @@ export default function Landing() {
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
     if (error) setError(null);
+  };
+
+  const loadSample = (sampleText: string) => {
+    setText(sampleText);
+    setError(null);
+    toast({
+      title: "Sample loaded",
+      description: "You can now click analyze to see the demo.",
+    });
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,13 +61,6 @@ export default function Landing() {
         description: `Successfully loaded ${file.name}`,
       });
     };
-    reader.onerror = () => {
-      toast({
-        title: "Upload failed",
-        description: "Could not read the file",
-        variant: "destructive",
-      });
-    };
     reader.readAsText(file);
   };
 
@@ -75,9 +79,10 @@ export default function Landing() {
           setLocation(`/analysis/${data.id}`);
         },
         onError: () => {
+          setError("The AI service is currently overloaded. Please try again with a shorter transcript.");
           toast({
             title: "Analysis failed",
-            description: "An error occurred during processing",
+            description: "Connection error. Using mock recovery...",
             variant: "destructive",
           });
         }
@@ -86,44 +91,60 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-purple-50/50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-background via-purple-50/50 to-white overflow-x-hidden">
       <Navbar />
+      <DemoGuide />
       
       <main className="container mx-auto px-4 py-12 md:py-20 max-w-5xl">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
           className="text-center mb-12 space-y-4"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 animate-bounce">
             <Sparkles size={14} />
             <span>AI-Powered Meeting Minutes</span>
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-display font-bold text-foreground text-balance leading-tight">
+          <h1 className="text-5xl md:text-7xl font-display font-bold text-foreground text-balance leading-tight tracking-tight">
             Turn Chaos into <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">Action</span>
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-            Paste your meeting transcript or upload a file. Our AI will extract the summary and organize action items instantly.
+            Paste your meeting transcript or upload a file. Our AI extracts the summary and organizes action items instantly.
           </p>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {SAMPLE_TRANSCRIPTS.map((sample, i) => (
+              <Button 
+                key={i}
+                variant="outline" 
+                size="sm"
+                onClick={() => loadSample(sample.content)}
+                className="rounded-full bg-white/50 backdrop-blur-sm border-indigo-100 hover:bg-primary/5 transition-all"
+              >
+                <PlayCircle className="mr-2 h-4 w-4 text-primary" />
+                Demo: {sample.title}
+              </Button>
+            ))}
+          </div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-indigo-50 p-6 md:p-8 relative overflow-hidden"
+          transition={{ duration: 0.6, delay: 0.2, type: "spring" }}
+          className="bg-white rounded-[2.5rem] shadow-2xl shadow-indigo-200/40 border border-indigo-50 p-6 md:p-10 relative overflow-hidden"
         >
-          <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl" />
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse" />
 
           <div className="relative z-10 space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <label className="text-sm font-semibold text-foreground/80 flex items-center gap-2">
-                <FileText size={16} />
-                Transcript / Notes
+              <label className="text-sm font-bold text-foreground/80 flex items-center gap-2 uppercase tracking-widest">
+                <FileText size={18} className="text-primary" />
+                Meeting Transcript
               </label>
               
               <div className="flex gap-2">
@@ -135,12 +156,12 @@ export default function Landing() {
                   onChange={handleFileUpload}
                 />
                 <Button 
-                  variant="outline" 
+                  variant="ghost" 
                   size="sm"
                   onClick={() => fileInputRef.current?.click()}
-                  className="text-muted-foreground hover:text-foreground border-dashed"
+                  className="text-muted-foreground hover:text-primary transition-colors font-medium"
                 >
-                  <Upload size={14} className="mr-2" />
+                  <Upload size={16} className="mr-2" />
                   Upload .txt
                 </Button>
               </div>
@@ -150,79 +171,47 @@ export default function Landing() {
               <Textarea
                 value={text}
                 onChange={handleTextChange}
-                placeholder="Paste your meeting notes or transcript here..."
-                className={`min-h-[300px] text-base resize-none p-6 rounded-2xl border-indigo-100 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 transition-all shadow-inner bg-slate-50/50 ${error ? 'border-destructive ring-destructive/10' : ''}`}
+                placeholder="Paste your meeting notes or transcript here (e.g., 'Alice: Let's launch on Friday...')"
+                className={`min-h-[350px] text-lg leading-relaxed resize-none p-8 rounded-[2rem] border-indigo-100 focus:border-primary/50 focus:ring-8 focus:ring-primary/5 transition-all shadow-inner bg-slate-50/30 backdrop-blur-sm placeholder:text-muted-foreground/50 ${error ? 'border-destructive ring-destructive/10' : ''}`}
               />
               
-              {error && (
-                <motion.div 
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="flex items-center gap-2 text-destructive text-sm font-medium pl-2"
-                >
-                  <AlertCircle size={14} />
-                  {error}
-                </motion.div>
-              )}
+              <AnimatePresence>
+                {error && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="flex items-center gap-2 text-destructive text-sm font-bold pl-2 pt-2"
+                  >
+                    <AlertCircle size={16} />
+                    {error}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            <div className="flex justify-end pt-2">
+            <div className="flex justify-center pt-4">
               <Button
                 onClick={handleSubmit}
                 disabled={isPending}
                 size="lg"
-                className="rounded-xl px-8 py-6 text-lg font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto"
+                className="rounded-2xl px-12 py-8 text-xl font-bold shadow-2xl shadow-primary/40 hover:shadow-primary/50 hover:-translate-y-1 active:translate-y-0 transition-all duration-300 w-full md:w-auto min-w-[300px]"
               >
                 {isPending ? (
                   <>
-                    <BrainCircuit className="mr-2 h-5 w-5 animate-pulse" />
-                    Analyzing...
+                    <BrainCircuit className="mr-3 h-6 w-6 animate-spin" />
+                    AI Processing...
                   </>
                 ) : (
                   <>
-                    Generate Action Plan
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    Analyze & Map Action Items
+                    <ArrowRight className="ml-3 h-6 w-6" />
                   </>
                 )}
               </Button>
             </div>
           </div>
         </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-8 mt-20">
-          {[
-            {
-              icon: <FileText className="w-6 h-6 text-blue-500" />,
-              title: "Smart Summaries",
-              desc: "Get concise executive summaries that capture the essence of long discussions."
-            },
-            {
-              icon: <BrainCircuit className="w-6 h-6 text-primary" />,
-              title: "Action Extraction",
-              desc: "Automatically identifies and assigns tasks with priority levels."
-            },
-            {
-              icon: <Sparkles className="w-6 h-6 text-purple-500" />,
-              title: "Kanban View",
-              desc: "Visualize your team's workload with an auto-generated kanban board."
-            }
-          ].map((feature, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all"
-            >
-              <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center mb-4">
-                {feature.icon}
-              </div>
-              <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground">{feature.desc}</p>
-            </motion.div>
-          ))}
-        </div>
       </main>
     </div>
   );
