@@ -1,40 +1,86 @@
 import { useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Upload, Sparkles, FileText, ArrowRight, BrainCircuit } from "lucide-react";
+import { Upload, Sparkles, FileText, ArrowRight, BrainCircuit, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateAnalysis } from "@/hooks/use-analysis";
 import { Navbar } from "@/components/layout/Navbar";
+import { cleanTranscript } from "@/utils/transcriptParser";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Landing() {
   const [text, setText] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [, setLocation] = useLocation();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
   
   const { mutate: analyze, isPending } = useCreateAnalysis();
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
+    if (error) setError(null);
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (!file.name.endsWith(".txt")) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload a .txt file",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (e) => {
       const content = e.target?.result as string;
+      if (!content.trim()) {
+        setError("The uploaded file is empty");
+        return;
+      }
       setText(content);
+      setError(null);
+      toast({
+        title: "File uploaded",
+        description: `Successfully loaded ${file.name}`,
+      });
+    };
+    reader.onerror = () => {
+      toast({
+        title: "Upload failed",
+        description: "Could not read the file",
+        variant: "destructive",
+      });
     };
     reader.readAsText(file);
   };
 
   const handleSubmit = () => {
-    if (!text.trim()) return;
+    const cleanedText = cleanTranscript(text);
+    
+    if (!cleanedText) {
+      setError("Please provide a meeting transcript before analyzing");
+      return;
+    }
     
     analyze(
-      { text },
+      { text: cleanedText },
       {
         onSuccess: (data) => {
           setLocation(`/analysis/${data.id}`);
         },
+        onError: () => {
+          toast({
+            title: "Analysis failed",
+            description: "An error occurred during processing",
+            variant: "destructive",
+          });
+        }
       }
     );
   };
@@ -70,12 +116,11 @@ export default function Landing() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-indigo-50 p-6 md:p-8 relative overflow-hidden"
         >
-          {/* Decorative gradients */}
           <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
           <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl" />
 
           <div className="relative z-10 space-y-6">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <label className="text-sm font-semibold text-foreground/80 flex items-center gap-2">
                 <FileText size={16} />
                 Transcript / Notes
@@ -101,19 +146,32 @@ export default function Landing() {
               </div>
             </div>
 
-            <Textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Paste your meeting notes or transcript here..."
-              className="min-h-[300px] text-base resize-none p-6 rounded-2xl border-indigo-100 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 transition-all shadow-inner bg-slate-50/50"
-            />
+            <div className="space-y-3">
+              <Textarea
+                value={text}
+                onChange={handleTextChange}
+                placeholder="Paste your meeting notes or transcript here..."
+                className={`min-h-[300px] text-base resize-none p-6 rounded-2xl border-indigo-100 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 transition-all shadow-inner bg-slate-50/50 ${error ? 'border-destructive ring-destructive/10' : ''}`}
+              />
+              
+              {error && (
+                <motion.div 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="flex items-center gap-2 text-destructive text-sm font-medium pl-2"
+                >
+                  <AlertCircle size={14} />
+                  {error}
+                </motion.div>
+              )}
+            </div>
 
             <div className="flex justify-end pt-2">
               <Button
                 onClick={handleSubmit}
-                disabled={!text.trim() || isPending}
+                disabled={isPending}
                 size="lg"
-                className="rounded-xl px-8 py-6 text-lg font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300"
+                className="rounded-xl px-8 py-6 text-lg font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto"
               >
                 {isPending ? (
                   <>
@@ -131,7 +189,6 @@ export default function Landing() {
           </div>
         </motion.div>
 
-        {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 mt-20">
           {[
             {
@@ -170,3 +227,4 @@ export default function Landing() {
     </div>
   );
 }
+
