@@ -69,5 +69,44 @@ export async function registerRoutes(
     res.json(analyses);
   });
 
+  // POST /api/aiCall - Mock AI Processing for development
+  app.post("/api/aiCall", async (req, res) => {
+    try {
+      const { text } = req.body;
+      
+      if (!text || typeof text !== "string") {
+        return res.status(400).json({ message: "Transcript text is required" });
+      }
+
+      // Simulate AI processing delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      /**
+       * MOCK AI RESPONSE
+       * This structure mimics the future IBM AI API integration response.
+       * Prompt logic will eventually wrap this:
+       * "You are an assistant that analyzes meeting transcripts... [Prompt details from request]"
+       */
+      const mockAiResponse = {
+        summary: [
+          "Agreed to move the product launch to November 15th to accommodate the new feature set.",
+          "Decision made to prioritize mobile app performance optimizations over the next two sprints.",
+          "Marketing budget increase of 15% approved for the Q4 campaign."
+        ],
+        actions: [
+          { task: "Update project roadmap with new launch date", assigned: "Sarah", priority: "high" },
+          { task: "Profile mobile app boot time and identify bottlenecks", assigned: "Alex", priority: "high" },
+          { task: "Draft Q4 marketing campaign proposal", assigned: "Jordan", priority: "medium" },
+          { task: "Schedule follow-up meeting with stakeholders", assigned: "Pat", priority: "low" }
+        ]
+      };
+
+      res.status(200).json(mockAiResponse);
+    } catch (err) {
+      console.error("AI call error:", err);
+      res.status(500).json({ message: "Internal server error during AI processing" });
+    }
+  });
+
   return httpServer;
 }
