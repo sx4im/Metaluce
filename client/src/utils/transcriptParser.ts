@@ -2,7 +2,7 @@
  * Utility to clean raw transcript text by removing extra whitespace
  * and preparing it for AI processing.
  */
-export function cleanTranscript(text) {
+export function cleanTranscript(text: string): string {
   if (!text) return "";
   
   return text
