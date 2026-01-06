@@ -93,11 +93,11 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 overflow-x-hidden relative flex flex-col selection:bg-primary/30 selection:text-white">
-      {/* Background Layer: Fixed to stay behind everything including scrolling content */}
-      <div className="fixed inset-0 w-full h-full bg-slate-950 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-slate-950 z-10 [mask-image:radial-gradient(transparent,white)] opacity-40" />
-        <Boxes className="opacity-30" />
+    <div className="min-h-screen bg-white overflow-x-hidden relative flex flex-col selection:bg-primary/20 selection:text-primary-foreground">
+      {/* Background Layer: Fixed to stay behind everything */}
+      <div className="fixed inset-0 w-full h-full bg-white z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-white z-10 [mask-image:radial-gradient(transparent,white)] opacity-60" />
+        <Boxes className="opacity-10 [&_div]:border-slate-200 [&_svg]:text-slate-200" />
       </div>
       
       <div className="relative z-10 flex flex-col flex-1">
@@ -111,16 +111,16 @@ export default function Landing() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-center mb-10 space-y-6 w-full"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-primary-foreground text-xs font-bold uppercase tracking-[0.2em] mb-4 backdrop-blur-md border border-white/10 shadow-xl">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 text-primary text-[10px] font-black uppercase tracking-[0.25em] mb-4 border border-slate-100 shadow-sm">
               <Sparkles size={12} className="text-primary animate-pulse" />
               <span>AI Intelligence for Teams</span>
             </div>
             
-            <h1 className="text-6xl md:text-8xl font-display font-extrabold text-white text-balance leading-[1.1] tracking-tighter">
-              Turn Chaos into <span className="text-transparent bg-clip-text bg-gradient-to-br from-primary via-indigo-400 to-purple-400">Action</span>
+            <h1 className="text-6xl md:text-8xl font-display font-extrabold text-slate-900 text-balance leading-[1.1] tracking-tighter">
+              Turn Chaos into <span className="text-transparent bg-clip-text bg-gradient-to-br from-primary via-indigo-600 to-purple-600">Action</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto text-balance leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto text-balance leading-relaxed font-medium">
               Synthesize meeting transcripts instantly. Our high-performance AI extracts executive summaries and maps tasks for you.
             </p>
 
@@ -131,7 +131,7 @@ export default function Landing() {
                   variant="outline" 
                   size="sm"
                   onClick={() => loadSample(sample.content)}
-                  className="rounded-full bg-white/5 backdrop-blur-md border-white/10 text-slate-300 hover:text-white hover:border-primary/50 transition-all duration-300 text-xs font-bold uppercase tracking-wider h-8"
+                  className="rounded-full bg-white border-slate-200 text-slate-600 hover:text-primary hover:border-primary/30 transition-all duration-300 text-[10px] font-black uppercase tracking-[0.15em] h-8 shadow-sm no-default-hover-elevate"
                 >
                   <PlayCircle className="mr-2 h-3.5 w-3.5 text-primary" />
                   {sample.title}
@@ -144,15 +144,15 @@ export default function Landing() {
             initial={{ opacity: 0, scale: 0.98, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full bg-slate-900/40 backdrop-blur-2xl rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border border-white/5 p-8 md:p-12 relative overflow-hidden ring-1 ring-white/10"
+            className="w-full bg-white/70 backdrop-blur-3xl rounded-[3.5rem] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] border border-slate-100 p-8 md:p-14 relative overflow-hidden"
           >
             <div className="relative z-10 space-y-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+                  <div className="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100 shadow-sm">
                     <FileText size={20} className="text-primary" />
                   </div>
-                  <label className="text-xs font-black text-slate-300 uppercase tracking-[0.25em]">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
                     Source Transcript
                   </label>
                 </div>
@@ -169,7 +169,7 @@ export default function Landing() {
                     variant="ghost" 
                     size="sm"
                     onClick={() => fileInputRef.current?.click()}
-                    className="text-slate-500 hover:text-white hover:bg-white/5 transition-all font-bold text-xs uppercase tracking-widest"
+                    className="text-slate-400 hover:text-slate-900 hover:bg-slate-50 transition-all font-black text-[10px] uppercase tracking-widest no-default-hover-elevate"
                   >
                     <Upload size={14} className="mr-2" />
                     Upload .txt
@@ -183,8 +183,8 @@ export default function Landing() {
                   onChange={handleTextChange}
                   placeholder="Paste your meeting notes or transcript here (e.g., 'Alice: Let's launch on Friday...')"
                   className={cn(
-                    "min-h-[400px] text-lg leading-relaxed resize-none p-10 rounded-[2.5rem] border-white/5 focus:border-primary/30 focus:ring-0 transition-all shadow-2xl bg-slate-950/40 backdrop-blur-md placeholder:text-slate-700 text-slate-200 ring-1 ring-white/5",
-                    error ? 'border-destructive/50 ring-destructive/20' : ''
+                    "min-h-[400px] text-lg leading-relaxed resize-none p-10 rounded-[3rem] border-slate-100 focus:border-primary/20 focus:ring-0 transition-all shadow-inner bg-slate-50/50 placeholder:text-slate-300 text-slate-700",
+                    error ? 'border-destructive/30 ring-destructive/5' : ''
                   )}
                 />
                 
@@ -194,7 +194,7 @@ export default function Landing() {
                       initial={{ opacity: 0, height: 0, y: -10 }}
                       animate={{ opacity: 1, height: "auto", y: 0 }}
                       exit={{ opacity: 0, height: 0, y: -10 }}
-                      className="flex items-center gap-2 text-red-400 text-xs font-black uppercase tracking-widest pl-4"
+                      className="flex items-center gap-2 text-red-500 text-[10px] font-black uppercase tracking-[0.2em] pl-6"
                     >
                       <AlertCircle size={14} />
                       {error}
@@ -203,26 +203,25 @@ export default function Landing() {
                 </AnimatePresence>
               </div>
 
-              <div className="flex justify-center pt-6">
+              <div className="flex justify-center pt-8">
                 <Button
                   onClick={handleSubmit}
                   disabled={isPending}
                   size="lg"
-                  className="group relative overflow-hidden rounded-2xl px-16 py-8 text-sm font-black uppercase tracking-[0.2em] shadow-[0_20px_40px_-10px_rgba(var(--primary),0.5)] transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] w-full md:w-auto"
+                  className="group relative overflow-hidden rounded-[2rem] px-20 py-10 text-[12px] font-black uppercase tracking-[0.3em] shadow-[0_25px_50px_-12px_rgba(var(--primary),0.25)] transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] w-full md:w-auto"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-primary via-indigo-500 to-purple-500 transition-all duration-500 group-hover:opacity-90" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.2),transparent)] opacity-0 group-hover:opacity-100 transition-opacity" />
                   
-                  <span className="relative flex items-center justify-center gap-3">
+                  <span className="relative flex items-center justify-center gap-4">
                     {isPending ? (
                       <>
-                        <BrainCircuit className="h-5 w-5 animate-spin" />
-                        Processing...
+                        <BrainCircuit className="h-6 w-6 animate-spin" />
+                        Analyzing...
                       </>
                     ) : (
                       <>
                         Start Intelligent Analysis
-                        <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                        <ArrowRight className="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1.5" />
                       </>
                     )}
                   </span>
