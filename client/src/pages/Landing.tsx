@@ -93,62 +93,69 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 overflow-x-hidden relative flex flex-col">
-      <div className="absolute inset-0 w-full h-full bg-slate-900 z-0 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
-      <Boxes className="opacity-20" />
+    <div className="min-h-screen bg-slate-950 overflow-x-hidden relative flex flex-col selection:bg-primary/30 selection:text-white">
+      {/* Background Layer: Fixed to stay behind everything including scrolling content */}
+      <div className="fixed inset-0 w-full h-full bg-slate-950 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-slate-950 z-10 [mask-image:radial-gradient(transparent,white)] opacity-40" />
+        <Boxes className="opacity-30" />
+      </div>
       
-      <div className="relative z-20 flex flex-col flex-1">
+      <div className="relative z-10 flex flex-col flex-1">
         <Navbar />
         <DemoGuide />
         
-        <main className="container mx-auto px-4 py-12 md:py-20 max-w-5xl flex-1">
+        <main className="container mx-auto px-4 py-8 md:py-16 max-w-5xl flex flex-col items-center justify-center min-h-[calc(100vh-64px)]">
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-center mb-12 space-y-4"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-10 space-y-6 w-full"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary-foreground text-sm font-medium mb-4 backdrop-blur-sm border border-white/10">
-              <Sparkles size={14} className="text-primary" />
-              <span>AI-Powered Meeting Minutes</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-primary-foreground text-xs font-bold uppercase tracking-[0.2em] mb-4 backdrop-blur-md border border-white/10 shadow-xl">
+              <Sparkles size={12} className="text-primary animate-pulse" />
+              <span>AI Intelligence for Teams</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-white text-balance leading-tight tracking-tight">
-              Turn Chaos into <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">Action</span>
+            <h1 className="text-6xl md:text-8xl font-display font-extrabold text-white text-balance leading-[1.1] tracking-tighter">
+              Turn Chaos into <span className="text-transparent bg-clip-text bg-gradient-to-br from-primary via-indigo-400 to-purple-400">Action</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto text-balance">
-              Paste your meeting transcript or upload a file. Our AI extracts the summary and organizes action items instantly.
+            <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto text-balance leading-relaxed">
+              Synthesize meeting transcripts instantly. Our high-performance AI extracts executive summaries and maps tasks for you.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-3 mt-8">
+            <div className="flex flex-wrap justify-center gap-3 mt-4">
               {SAMPLE_TRANSCRIPTS.map((sample, i) => (
                 <Button 
                   key={i}
                   variant="outline" 
                   size="sm"
                   onClick={() => loadSample(sample.content)}
-                  className="rounded-full bg-white/5 backdrop-blur-md border-white/10 text-white hover:bg-white/10 transition-all no-default-hover-elevate"
+                  className="rounded-full bg-white/5 backdrop-blur-md border-white/10 text-slate-300 hover:text-white hover:border-primary/50 transition-all duration-300 text-xs font-bold uppercase tracking-wider h-8"
                 >
-                  <PlayCircle className="mr-2 h-4 w-4 text-primary" />
-                  Demo: {sample.title}
+                  <PlayCircle className="mr-2 h-3.5 w-3.5 text-primary" />
+                  {sample.title}
                 </Button>
               ))}
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, type: "spring" }}
-            className="bg-slate-900/60 backdrop-blur-xl rounded-[2.5rem] shadow-2xl border border-white/10 p-6 md:p-10 relative overflow-hidden"
+            initial={{ opacity: 0, scale: 0.98, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full bg-slate-900/40 backdrop-blur-2xl rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border border-white/5 p-8 md:p-12 relative overflow-hidden ring-1 ring-white/10"
           >
-            <div className="relative z-10 space-y-6">
+            <div className="relative z-10 space-y-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <label className="text-sm font-bold text-slate-300 flex items-center gap-2 uppercase tracking-widest">
-                  <FileText size={18} className="text-primary" />
-                  Meeting Transcript
-                </label>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+                    <FileText size={20} className="text-primary" />
+                  </div>
+                  <label className="text-xs font-black text-slate-300 uppercase tracking-[0.25em]">
+                    Source Transcript
+                  </label>
+                </div>
                 
                 <div className="flex gap-2">
                   <input
@@ -162,58 +169,63 @@ export default function Landing() {
                     variant="ghost" 
                     size="sm"
                     onClick={() => fileInputRef.current?.click()}
-                    className="text-slate-400 hover:text-white transition-colors font-medium"
+                    className="text-slate-500 hover:text-white hover:bg-white/5 transition-all font-bold text-xs uppercase tracking-widest"
                   >
-                    <Upload size={16} className="mr-2" />
+                    <Upload size={14} className="mr-2" />
                     Upload .txt
                   </Button>
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <Textarea
                   value={text}
                   onChange={handleTextChange}
                   placeholder="Paste your meeting notes or transcript here (e.g., 'Alice: Let's launch on Friday...')"
                   className={cn(
-                    "min-h-[350px] text-lg leading-relaxed resize-none p-8 rounded-[2rem] border-white/10 focus:border-primary/50 focus:ring-8 focus:ring-primary/5 transition-all shadow-inner bg-slate-950/50 backdrop-blur-sm placeholder:text-slate-600 text-white",
-                    error ? 'border-destructive ring-destructive/10' : ''
+                    "min-h-[400px] text-lg leading-relaxed resize-none p-10 rounded-[2.5rem] border-white/5 focus:border-primary/30 focus:ring-0 transition-all shadow-2xl bg-slate-950/40 backdrop-blur-md placeholder:text-slate-700 text-slate-200 ring-1 ring-white/5",
+                    error ? 'border-destructive/50 ring-destructive/20' : ''
                   )}
                 />
                 
                 <AnimatePresence>
                   {error && (
                     <motion.div 
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="flex items-center gap-2 text-destructive text-sm font-bold pl-2 pt-2"
+                      initial={{ opacity: 0, height: 0, y: -10 }}
+                      animate={{ opacity: 1, height: "auto", y: 0 }}
+                      exit={{ opacity: 0, height: 0, y: -10 }}
+                      className="flex items-center gap-2 text-red-400 text-xs font-black uppercase tracking-widest pl-4"
                     >
-                      <AlertCircle size={16} />
+                      <AlertCircle size={14} />
                       {error}
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
 
-              <div className="flex justify-center pt-4">
+              <div className="flex justify-center pt-6">
                 <Button
                   onClick={handleSubmit}
                   disabled={isPending}
                   size="lg"
-                  className="rounded-2xl px-12 py-8 text-xl font-bold shadow-2xl shadow-primary/40 hover:shadow-primary/50 hover:-translate-y-1 active:translate-y-0 transition-all duration-300 w-full md:w-auto min-w-[300px]"
+                  className="group relative overflow-hidden rounded-2xl px-16 py-8 text-sm font-black uppercase tracking-[0.2em] shadow-[0_20px_40px_-10px_rgba(var(--primary),0.5)] transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] w-full md:w-auto"
                 >
-                  {isPending ? (
-                    <>
-                      <BrainCircuit className="mr-3 h-6 w-6 animate-spin" />
-                      AI Processing...
-                    </>
-                  ) : (
-                    <>
-                      Analyze & Map Action Items
-                      <ArrowRight className="ml-3 h-6 w-6" />
-                    </>
-                  )}
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-indigo-500 to-purple-500 transition-all duration-500 group-hover:opacity-90" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.2),transparent)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <span className="relative flex items-center justify-center gap-3">
+                    {isPending ? (
+                      <>
+                        <BrainCircuit className="h-5 w-5 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Start Intelligent Analysis
+                        <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </>
+                    )}
+                  </span>
                 </Button>
               </div>
             </div>
