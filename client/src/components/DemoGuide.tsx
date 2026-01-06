@@ -8,7 +8,7 @@ export function DemoGuide() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-    }, 10000); // 10 seconds
+    }, 15000); // 15 seconds
 
     return () => clearTimeout(timer);
   }, []);
@@ -27,7 +27,7 @@ export function DemoGuide() {
             
             <button 
               onClick={() => setIsVisible(false)}
-              className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600"
+              className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600 z-20"
             >
               <X size={14} />
             </button>
@@ -43,14 +43,6 @@ export function DemoGuide() {
                   <li>Click <span className="text-primary font-bold">"Analyze"</span> to start.</li>
                   <li>Review AI summary & <span className="text-slate-900 font-bold">Kanban tasks</span>.</li>
                 </ol>
-                <div className="h-1 w-full bg-slate-100 rounded-full mt-3 overflow-hidden">
-                  <motion.div 
-                    initial={{ width: "100%" }}
-                    animate={{ width: "0%" }}
-                    transition={{ duration: 10, ease: "linear" }}
-                    className="h-full bg-primary/30"
-                  />
-                </div>
               </div>
             </div>
           </div>
