@@ -11,69 +11,69 @@ export default function History() {
   const { data: analyses, isLoading } = useAnalyses();
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navbar />
       
       <main className="container mx-auto px-4 py-12 max-w-5xl">
         <div className="mb-10">
-          <h1 className="text-3xl font-display font-bold text-foreground mb-2">Analysis History</h1>
-          <p className="text-muted-foreground">Your past meeting insights and action plans.</p>
+          <h1 className="text-4xl font-display font-black text-foreground mb-2 uppercase tracking-tight italic">Analysis History</h1>
+          <p className="text-foreground/60 font-medium">Your past meeting insights and action plans.</p>
         </div>
 
         {isLoading ? (
-          <div className="grid gap-4">
+          <div className="grid gap-6">
             {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-32 w-full bg-white rounded-xl" />
+              <Skeleton key={i} className="h-32 w-full bg-white/40 rounded-3xl" />
             ))}
           </div>
         ) : analyses?.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200">
-            <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
-              <FileText size={32} />
+          <div className="text-center py-24 bg-white/20 backdrop-blur-sm rounded-[3rem] border-2 border-dashed border-foreground/10">
+            <div className="w-20 h-20 bg-foreground/5 rounded-full flex items-center justify-center mx-auto mb-6 text-foreground/40">
+              <FileText size={40} />
             </div>
-            <h3 className="text-lg font-bold text-foreground mb-2">No analyses yet</h3>
-            <p className="text-muted-foreground mb-6">Get started by analyzing your first meeting transcript.</p>
+            <h3 className="text-xl font-black text-foreground mb-2 uppercase italic">No analyses yet</h3>
+            <p className="text-foreground/60 mb-8 font-medium">Get started by analyzing your first meeting transcript.</p>
             <Link href="/">
-              <span className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold bg-primary text-white shadow-lg hover:shadow-xl hover:bg-primary/90 transition-all cursor-pointer">
+              <span className="inline-flex items-center justify-center px-8 py-4 rounded-full font-black text-[10px] uppercase tracking-[0.3em] bg-foreground text-background shadow-2xl hover:scale-105 transition-all cursor-pointer italic">
                 Start Analysis
               </span>
             </Link>
           </div>
         ) : (
-          <div className="grid gap-4">
+          <div className="grid gap-6">
             {analyses?.map((analysis) => {
               const actionCount = (analysis.actionItems as ActionItem[]).length;
               const highPriorityCount = (analysis.actionItems as ActionItem[]).filter(a => a.priority === 'High').length;
               
               return (
                 <Link key={analysis.id} href={`/analysis/${analysis.id}`}>
-                  <div className="group block bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-1 h-full bg-slate-200 group-hover:bg-primary transition-colors" />
+                  <div className="group block bg-white/40 backdrop-blur-md rounded-[2.5rem] p-8 border border-foreground/5 shadow-sm hover:shadow-2xl hover:border-foreground/10 transition-all cursor-pointer relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-1.5 h-full bg-foreground/10 group-hover:bg-foreground transition-colors" />
                     
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 flex items-center gap-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="text-[10px] font-black px-3 py-1 rounded-full bg-foreground/5 text-foreground/60 flex items-center gap-2 uppercase tracking-widest">
                             <Calendar size={12} />
                             {formatDistanceToNow(new Date(analysis.createdAt!), { addSuffix: true })}
                           </span>
                         </div>
-                        <h3 className="text-lg font-bold text-foreground truncate pr-4">
+                        <h3 className="text-xl font-black text-foreground truncate pr-6 uppercase italic">
                           {analysis.summary.slice(0, 100)}{analysis.summary.length > 100 ? "..." : ""}
                         </h3>
                       </div>
                       
-                      <div className="flex items-center gap-6 text-sm text-muted-foreground shrink-0">
-                        <div className="flex items-center gap-1.5">
-                          <CheckSquare size={16} />
-                          <span className="font-medium text-foreground">{actionCount}</span> Action Items
+                      <div className="flex items-center gap-8 text-[10px] font-black uppercase tracking-widest text-foreground/40 shrink-0">
+                        <div className="flex items-center gap-2">
+                          <CheckSquare size={16} className="text-foreground" />
+                          <span className="text-foreground">{actionCount}</span> Items
                         </div>
                         {highPriorityCount > 0 && (
-                          <span className="px-2 py-1 rounded-md bg-red-50 text-red-600 text-xs font-bold border border-red-100">
-                            {highPriorityCount} High Priority
+                          <span className="px-3 py-1 rounded-full bg-red-100 text-red-600 border border-red-200">
+                            {highPriorityCount} Critical
                           </span>
                         )}
-                        <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                        <ArrowRight className="w-6 h-6 text-foreground/20 group-hover:text-foreground group-hover:translate-x-2 transition-all" />
                       </div>
                     </div>
                   </div>

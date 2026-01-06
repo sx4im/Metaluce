@@ -93,11 +93,11 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden relative flex flex-col selection:bg-primary/20 selection:text-primary-foreground">
+    <div className="min-h-screen bg-background overflow-x-hidden relative flex flex-col selection:bg-primary/30 selection:text-foreground">
       {/* Background Layer: Fixed to stay behind everything */}
-      <div className="fixed inset-0 w-full h-full bg-white z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-white z-10 [mask-image:radial-gradient(transparent,white)] opacity-60" />
-        <Boxes className="opacity-10 [&_div]:border-slate-200 [&_svg]:text-slate-200" />
+      <div className="fixed inset-0 w-full h-full bg-background z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-background z-10 [mask-image:radial-gradient(transparent,white)] opacity-60" />
+        <Boxes className="opacity-10 [&_div]:border-foreground/10 [&_svg]:text-foreground/10" />
       </div>
       
       <div className="relative z-10 flex flex-col flex-1">
@@ -111,16 +111,16 @@ export default function Landing() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-center mb-10 space-y-6 w-full"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 text-primary text-[10px] font-black uppercase tracking-[0.25em] mb-4 border border-slate-100 shadow-sm">
-              <Sparkles size={12} className="text-primary animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-foreground text-[10px] font-black uppercase tracking-[0.25em] mb-4 border border-primary/20 shadow-sm">
+              <Sparkles size={12} className="text-foreground animate-pulse" />
               <span>AI Intelligence for Teams</span>
             </div>
             
-            <h1 className="text-6xl md:text-8xl font-display font-extrabold text-slate-900 text-balance leading-[1.1] tracking-tighter">
-              Turn Chaos into <span className="text-transparent bg-clip-text bg-gradient-to-br from-primary via-indigo-600 to-purple-600">Action</span>
+            <h1 className="text-6xl md:text-8xl font-display font-extrabold text-foreground text-balance leading-[1.1] tracking-tighter">
+              Turn Chaos into <span className="text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground/80 to-primary">Action</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto text-balance leading-relaxed font-medium">
+            <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto text-balance leading-relaxed font-medium">
               Synthesize meeting transcripts instantly. Our high-performance AI extracts executive summaries and maps tasks for you.
             </p>
 
@@ -131,7 +131,7 @@ export default function Landing() {
                   variant="outline" 
                   size="sm"
                   onClick={() => loadSample(sample.content)}
-                  className="rounded-full bg-white border-slate-200 text-slate-600 hover:text-primary hover:border-primary/30 transition-all duration-300 text-[10px] font-black uppercase tracking-[0.15em] h-8 shadow-sm no-default-hover-elevate"
+                  className="rounded-full bg-background/50 border-primary/30 text-foreground/70 hover:text-foreground hover:border-foreground/30 transition-all duration-300 text-[10px] font-black uppercase tracking-[0.15em] h-8 shadow-sm no-default-hover-elevate"
                 >
                   <PlayCircle className="mr-2 h-3.5 w-3.5 text-primary" />
                   {sample.title}
@@ -144,15 +144,15 @@ export default function Landing() {
             initial={{ opacity: 0, scale: 0.98, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full bg-white/70 backdrop-blur-3xl rounded-[3.5rem] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] border border-slate-100 p-8 md:p-14 relative overflow-hidden"
+            className="w-full bg-background/40 backdrop-blur-3xl rounded-[3.5rem] shadow-[0_40px_80px_-20px_rgba(1,58,66,0.1)] border border-primary/20 p-8 md:p-14 relative overflow-hidden"
           >
             <div className="relative z-10 space-y-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100 shadow-sm">
-                    <FileText size={20} className="text-primary" />
+                  <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-sm">
+                    <FileText size={20} className="text-foreground" />
                   </div>
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
+                  <label className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.3em]">
                     Source Transcript
                   </label>
                 </div>
@@ -169,7 +169,7 @@ export default function Landing() {
                     variant="ghost" 
                     size="sm"
                     onClick={() => fileInputRef.current?.click()}
-                    className="text-slate-400 hover:text-slate-900 hover:bg-slate-50 transition-all font-black text-[10px] uppercase tracking-widest no-default-hover-elevate"
+                    className="text-foreground/50 hover:text-foreground hover:bg-primary/10 transition-all font-black text-[10px] uppercase tracking-widest no-default-hover-elevate"
                   >
                     <Upload size={14} className="mr-2" />
                     Upload .txt
@@ -183,7 +183,7 @@ export default function Landing() {
                   onChange={handleTextChange}
                   placeholder="Paste your meeting notes or transcript here (e.g., 'Alice: Let's launch on Friday...')"
                   className={cn(
-                    "min-h-[400px] text-lg leading-relaxed resize-none p-10 rounded-[3rem] border-slate-100 focus:border-primary/20 focus:ring-0 transition-all shadow-inner bg-slate-50/50 placeholder:text-slate-300 text-slate-700",
+                    "min-h-[400px] text-lg leading-relaxed resize-none p-10 rounded-[3rem] border-border focus:border-foreground/20 focus:ring-0 transition-all shadow-inner bg-white/30 placeholder:text-foreground/20 text-foreground",
                     error ? 'border-destructive/30 ring-destructive/5' : ''
                   )}
                 />
@@ -194,7 +194,7 @@ export default function Landing() {
                       initial={{ opacity: 0, height: 0, y: -10 }}
                       animate={{ opacity: 1, height: "auto", y: 0 }}
                       exit={{ opacity: 0, height: 0, y: -10 }}
-                      className="flex items-center gap-2 text-red-500 text-[10px] font-black uppercase tracking-[0.2em] pl-6"
+                      className="flex items-center gap-2 text-red-600 text-[10px] font-black uppercase tracking-[0.2em] pl-6"
                     >
                       <AlertCircle size={14} />
                       {error}
@@ -208,17 +208,17 @@ export default function Landing() {
                   type="submit"
                   onClick={handleSubmit}
                   disabled={isPending}
-                  className="flex justify-center gap-4 items-center mx-auto shadow-xl text-lg bg-gray-50 backdrop-blur-md font-bold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-emerald-500 hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-8 py-4 overflow-hidden border-2 rounded-full group disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex justify-center gap-4 items-center mx-auto shadow-xl text-lg bg-background backdrop-blur-md font-bold isolation-auto border-foreground/10 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-foreground hover:text-background before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-8 py-4 overflow-hidden border-2 rounded-full group disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   {isPending ? "Processing..." : "Analyze Meeting"}
                   <svg
-                    className="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-gray-50 text-gray-50 ease-linear duration-300 rounded-full border border-gray-700 group-hover:border-none p-2 rotate-45"
+                    className="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-background text-background ease-linear duration-300 rounded-full border border-foreground group-hover:border-none p-2 rotate-45"
                     viewBox="0 0 16 19"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       d="M7 18C7 18.5523 7.44772 19 8 19C8.55228 19 9 18.5523 9 18H7ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 18L9 1H7L7 18H9Z"
-                      className="fill-gray-800 group-hover:fill-gray-800"
+                      className="fill-foreground group-hover:fill-foreground"
                     ></path>
                   </svg>
                 </button>
@@ -230,4 +230,3 @@ export default function Landing() {
     </div>
   );
 }
-

@@ -75,27 +75,27 @@ export default function AnalysisResult() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navbar />
       
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 mb-1">
               <span>Analysis #{analysis.id}</span>
               <span>•</span>
               <span>{new Date(analysis.createdAt!).toLocaleDateString()}</span>
             </div>
-            <h1 className="text-3xl font-display font-bold text-foreground">Analysis Results</h1>
+            <h1 className="text-4xl font-display font-black text-foreground uppercase tracking-tight italic">Analysis Results</h1>
           </div>
           
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={copySummary}>
-              <Copy className="w-4 h-4 mr-2" />
+            <Button variant="outline" size="sm" onClick={copySummary} className="rounded-full border-foreground/10 text-[10px] font-black uppercase tracking-widest hover:bg-foreground hover:text-background transition-all">
+              <Copy className="w-3 h-3 mr-2" />
               Copy Summary
             </Button>
-            <Button variant="outline" size="sm">
-              <Download className="w-4 h-4 mr-2" />
+            <Button variant="outline" size="sm" className="rounded-full border-foreground/10 text-[10px] font-black uppercase tracking-widest hover:bg-foreground hover:text-background transition-all">
+              <Download className="w-3 h-3 mr-2" />
               Export PDF
             </Button>
           </div>
@@ -103,17 +103,17 @@ export default function AnalysisResult() {
 
         {/* Executive Summary Section */}
         <section className="mb-12">
-          <Card className="p-6 md:p-8 bg-white shadow-sm border-slate-200 overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                <CheckCircle2 size={20} />
+          <Card className="p-8 md:p-12 bg-white/40 backdrop-blur-xl shadow-2xl border-foreground/5 overflow-hidden relative rounded-[2.5rem]">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-foreground/20" />
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2.5 bg-foreground/5 rounded-xl text-foreground">
+                <CheckCircle2 size={24} />
               </div>
-              <h2 className="text-xl font-bold">Executive Summary</h2>
+              <h2 className="text-xl font-black uppercase tracking-[0.1em] italic">Executive Summary</h2>
             </div>
-            <div className="prose prose-slate max-w-none text-foreground/90 leading-relaxed text-lg">
+            <div className="prose prose-slate max-w-none text-foreground/80 leading-relaxed text-lg font-medium">
               {analysis.summary.split('\n').map((para, i) => (
-                <p key={i}>{para}</p>
+                <p key={i} className="mb-4">{para}</p>
               ))}
             </div>
           </Card>
@@ -121,40 +121,40 @@ export default function AnalysisResult() {
 
         {/* Action Board Section */}
         <section>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-purple-100 rounded-lg text-purple-600">
-              <AlertCircle size={20} />
+          <div className="flex items-center gap-3 mb-8">
+            <div className="p-2.5 bg-primary/20 rounded-xl text-foreground">
+              <AlertCircle size={24} />
             </div>
-            <h2 className="text-xl font-bold">Action Plan</h2>
+            <h2 className="text-xl font-black uppercase tracking-[0.1em] italic">Action Plan</h2>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-6 overflow-x-auto pb-4">
+          <div className="flex flex-col lg:flex-row gap-8 overflow-x-auto pb-8">
             <KanbanColumn 
-              title="High Priority" 
+              title="Critical" 
               items={highPriority} 
-              colorClass="border-red-100 bg-red-50/50" 
+              colorClass="border-red-200/50 bg-red-50/30" 
             />
             <KanbanColumn 
-              title="Medium Priority" 
+              title="Pending" 
               items={mediumPriority} 
-              colorClass="border-amber-100 bg-amber-50/50" 
+              colorClass="border-amber-200/50 bg-amber-50/30" 
             />
             <KanbanColumn 
-              title="Low Priority" 
+              title="Standard" 
               items={lowPriority} 
-              colorClass="border-emerald-100 bg-emerald-50/50" 
+              colorClass="border-emerald-200/50 bg-emerald-50/30" 
             />
           </div>
         </section>
 
-        {/* Original Text Toggle (Could be an accordion) */}
-        <section className="mt-12 pt-8 border-t border-slate-200">
+        {/* Original Text Toggle */}
+        <section className="mt-12 pt-12 border-t border-foreground/10">
           <details className="group">
-            <summary className="flex items-center cursor-pointer text-muted-foreground hover:text-foreground transition-colors">
-              <span className="font-medium mr-2">View Original Transcript</span>
-              <div className="h-px bg-slate-200 flex-1 ml-4" />
+            <summary className="flex items-center cursor-pointer text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 hover:text-foreground transition-colors">
+              <span className="mr-2">Original Transcript</span>
+              <div className="h-px bg-foreground/10 flex-1 ml-4" />
             </summary>
-            <div className="mt-4 p-6 bg-slate-100 rounded-xl font-mono text-sm text-slate-600 whitespace-pre-wrap max-h-96 overflow-y-auto border border-slate-200 shadow-inner">
+            <div className="mt-6 p-10 bg-white/20 backdrop-blur-sm rounded-[2rem] font-mono text-sm text-foreground/60 whitespace-pre-wrap max-h-96 overflow-y-auto border border-foreground/5 shadow-inner">
               {analysis.originalText}
             </div>
           </details>
