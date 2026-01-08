@@ -16,7 +16,7 @@ export default function History() {
       
       <main className="container mx-auto px-4 py-12 max-w-5xl">
         <div className="mb-10">
-          <h1 className="text-4xl font-display font-black text-foreground mb-2 uppercase tracking-tight italic">Analysis History</h1>
+          <h1 className="text-4xl font-display font-extrabold text-foreground mb-2 tracking-tight">Analysis History</h1>
           <p className="text-foreground/60 font-medium">Your past meeting insights and action plans.</p>
         </div>
 
@@ -31,10 +31,10 @@ export default function History() {
             <div className="w-20 h-20 bg-foreground/5 rounded-full flex items-center justify-center mx-auto mb-6 text-foreground/40">
               <FileText size={40} />
             </div>
-            <h3 className="text-xl font-black text-foreground mb-2 uppercase italic">No analyses yet</h3>
+            <h3 className="text-xl font-bold text-foreground mb-2">No analyses yet</h3>
             <p className="text-foreground/60 mb-8 font-medium">Get started by analyzing your first meeting transcript.</p>
             <Link href="/">
-              <span className="inline-flex items-center justify-center px-8 py-4 rounded-full font-black text-[10px] uppercase tracking-[0.3em] bg-foreground text-background shadow-2xl hover:scale-105 transition-all cursor-pointer italic">
+              <span className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold text-sm bg-foreground text-background shadow-lg hover:scale-105 transition-all cursor-pointer">
                 Start Analysis
               </span>
             </Link>
@@ -47,26 +47,26 @@ export default function History() {
               
               return (
                 <Link key={analysis.id} href={`/analysis/${analysis.id}`}>
-                  <div className="group block bg-white/40 backdrop-blur-md rounded-[2.5rem] p-8 border border-foreground/5 shadow-sm hover:shadow-2xl hover:border-foreground/10 transition-all cursor-pointer relative overflow-hidden">
+                  <div className="group block bg-white/40 backdrop-blur-md rounded-[2.5rem] p-8 border border-foreground/5 shadow-sm hover:shadow-xl hover:border-foreground/10 transition-all cursor-pointer relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-1.5 h-full bg-foreground/10 group-hover:bg-foreground transition-colors" />
                     
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-3">
-                          <span className="text-[10px] font-black px-3 py-1 rounded-full bg-foreground/5 text-foreground/60 flex items-center gap-2 uppercase tracking-widest">
+                          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-foreground/5 text-foreground/60 flex items-center gap-2 tracking-tight">
                             <Calendar size={12} />
                             {formatDistanceToNow(new Date(analysis.createdAt!), { addSuffix: true })}
                           </span>
                         </div>
-                        <h3 className="text-xl font-black text-foreground truncate pr-6 uppercase italic">
+                        <h3 className="text-xl font-bold text-foreground truncate pr-6">
                           {analysis.summary.slice(0, 100)}{analysis.summary.length > 100 ? "..." : ""}
                         </h3>
                       </div>
                       
-                      <div className="flex items-center gap-8 text-[10px] font-black uppercase tracking-widest text-foreground/40 shrink-0">
+                      <div className="flex items-center gap-8 text-xs font-semibold tracking-tight text-foreground/40 shrink-0">
                         <div className="flex items-center gap-2">
                           <CheckSquare size={16} className="text-foreground" />
-                          <span className="text-foreground">{actionCount}</span> Items
+                          <span className="text-foreground font-bold">{actionCount}</span> Items
                         </div>
                         {highPriorityCount > 0 && (
                           <span className="px-3 py-1 rounded-full bg-red-100 text-red-600 border border-red-200">

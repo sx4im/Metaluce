@@ -208,11 +208,11 @@ export default function Landing() {
                   type="submit"
                   onClick={handleSubmit}
                   disabled={isPending}
-                  className="flex justify-center gap-4 items-center mx-auto shadow-xl text-lg bg-background backdrop-blur-md font-bold isolation-auto border-foreground/10 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-foreground hover:text-background before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-8 py-4 overflow-hidden border-2 rounded-full group disabled:opacity-50 disabled:cursor-not-allowed transition-all transform-gpu"
+                  className="flex justify-center gap-4 items-center mx-auto shadow-xl text-lg bg-background backdrop-blur-md font-bold isolation-auto border-foreground/10 before:absolute before:w-full before:transition-all before:duration-500 before:ease-out before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-foreground hover:text-background before:-z-10 before:aspect-square before:hover:scale-[2.5] before:hover:duration-500 relative z-10 px-8 py-4 overflow-hidden border-2 rounded-full group disabled:opacity-50 disabled:cursor-not-allowed transition-all transform-gpu"
                 >
                   {isPending ? "Processing..." : "Analyze Meeting"}
                   <svg
-                    className="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-background text-background ease-linear duration-300 rounded-full border border-foreground group-hover:border-none p-2 rotate-45 transform-gpu"
+                    className="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-background text-background transition-all duration-300 ease-in-out rounded-full border border-foreground group-hover:border-none p-2 rotate-45 transform-gpu"
                     viewBox="0 0 16 19"
                     xmlns="http://www.w3.org/2000/svg"
                   >
