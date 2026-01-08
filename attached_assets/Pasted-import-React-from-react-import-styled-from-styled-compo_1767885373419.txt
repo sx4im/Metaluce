@@ -1,56 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+import React from 'react';
+import styled from 'styled-components';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  /* Refined Midnight Palette */
-  --background: 60 61% 98%; /* Softer Off-White/Beige */
-  --foreground: 187 97% 11%; /* Deep Midnight Green */
-  
-  --primary: 188 47% 62%; /* Refined Muted Blue */
-  --primary-foreground: 187 97% 98%;
-  
-  --secondary: 188 20% 94%;
-  --secondary-foreground: 187 97% 11%;
-  
-  --muted: 188 10% 90%;
-  --muted-foreground: 187 20% 40%;
-  
-  --accent: 188 47% 92%;
-  --accent-foreground: 187 97% 11%;
-  
-  --border: 187 15% 88%;
-  --input: 187 15% 88%;
-  --ring: 187 97% 11%;
-  
-  --radius: 0.75rem; /* Slightly tighter radius for professional feel */
-  
-  --font-sans: 'Inter', sans-serif;
-  --font-display: 'Plus Jakarta Sans', sans-serif;
-
-  --card: 0 0% 100%;
-  --card-foreground: 187 97% 11%;
-  --card-border: 187 15% 92%;
+const Button = () => {
+  return (
+    <StyledWrapper>
+      <div className="container">
+        <a href="#" className="button type--C">
+          <div className="button__line" />
+          <div className="button__line" />
+          <span className="button__text">ENTRY</span>
+          <div className="button__drow1" />
+          <div className="button__drow2" />
+        </a>
+      </div>
+    </StyledWrapper>
+  );
 }
 
-@layer base {
-  * {
-    @apply border-border;
+const StyledWrapper = styled.div`
+  .type--A {
+    --line_color: #555555;
+    --back_color: #ffecf6;
   }
-  body {
-    @apply bg-background text-foreground antialiased font-sans;
+  .type--B {
+    --line_color: #1b1919;
+    --back_color: #e9ecff;
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display tracking-tight text-foreground font-bold;
+  .type--C {
+    --line_color: #00135c;
+    --back_color: #defffa;
   }
-}
-
-@layer components {
-  .entry-button {
-    --line_color: #013A42;
-    --back_color: #8ACCD5;
+  .button {
     position: relative;
     z-index: 0;
     width: 240px;
@@ -61,7 +41,6 @@
     color: var(--line_color);
     letter-spacing: 2px;
     transition: all 0.3s ease;
-    @apply flex items-center justify-center;
   }
   .button__text {
     display: flex;
@@ -70,8 +49,8 @@
     width: 100%;
     height: 100%;
   }
-  .entry-button::before,
-  .entry-button::after,
+  .button::before,
+  .button::after,
   .button__text::before,
   .button__text::after {
     content: "";
@@ -81,12 +60,12 @@
     background: var(--line_color);
     transition: all 0.5s ease;
   }
-  .entry-button::before {
+  .button::before {
     top: 0;
     left: 54px;
     width: calc(100% - 56px * 2 - 16px);
   }
-  .entry-button::after {
+  .button::after {
     top: 0;
     right: 54px;
     width: 8px;
@@ -126,15 +105,15 @@
   .button__line:nth-child(2)::before {
     right: 0;
   }
-  .entry-button:hover {
+  .button:hover {
     letter-spacing: 6px;
   }
-  .entry-button:hover::before,
-  .entry-button:hover .button__text::before {
+  .button:hover::before,
+  .button:hover .button__text::before {
     width: 8px;
   }
-  .entry-button:hover::after,
-  .entry-button:hover .button__text::after {
+  .button:hover::after,
+  .button:hover .button__text::after {
     width: calc(100% - 56px * 2 - 16px);
   }
   .button__drow1,
@@ -209,50 +188,88 @@
   .button__drow2::after {
     background: var(--back_color);
   }
-  .entry-button:hover .button__drow1 {
+  .button:hover .button__drow1 {
     animation: drow1 ease-in 0.06s;
     animation-fill-mode: forwards;
   }
-  .entry-button:hover .button__drow1::before {
+  .button:hover .button__drow1::before {
     animation: drow2 linear 0.08s 0.06s;
     animation-fill-mode: forwards;
   }
-  .entry-button:hover .button__drow1::after {
+  .button:hover .button__drow1::after {
     animation: drow3 linear 0.03s 0.14s;
     animation-fill-mode: forwards;
   }
-  .entry-button:hover .button__drow2 {
+  .button:hover .button__drow2 {
     animation: drow4 linear 0.06s 0.2s;
     animation-fill-mode: forwards;
   }
-  .entry-button:hover .button__drow2::before {
+  .button:hover .button__drow2::before {
     animation: drow3 linear 0.03s 0.26s;
     animation-fill-mode: forwards;
   }
-  .entry-button:hover .button__drow2::after {
+  .button:hover .button__drow2::after {
     animation: drow5 linear 0.06s 0.32s;
     animation-fill-mode: forwards;
   }
   @keyframes drow1 {
-    0% { height: 0; }
-    100% { height: 100px; }
+    0% {
+      height: 0;
+    }
+    100% {
+      height: 100px;
+    }
   }
   @keyframes drow2 {
-    0% { width: 0; opacity: 0; }
-    10% { opacity: 0; }
-    11% { opacity: 1; }
-    100% { width: 120px; }
+    0% {
+      width: 0;
+      opacity: 0;
+    }
+    10% {
+      opacity: 0;
+    }
+    11% {
+      opacity: 1;
+    }
+    100% {
+      width: 120px;
+    }
   }
   @keyframes drow3 {
-    0% { width: 0; }
-    100% { width: 80px; }
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 80px;
+    }
   }
   @keyframes drow4 {
-    0% { height: 0; }
-    100% { height: 120px; }
+    0% {
+      height: 0;
+    }
+    100% {
+      height: 120px;
+    }
   }
   @keyframes drow5 {
-    0% { width: 0; }
-    100% { width: 124px; }
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 124px;
+    }
   }
-}
+
+  .container {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .button:not(:last-child) {
+    margin-bottom: 64px;
+  }`;
+
+export default Button;
