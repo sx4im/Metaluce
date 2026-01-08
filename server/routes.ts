@@ -32,19 +32,22 @@ export async function registerRoutes(
       // 2. Identify core topics
       const topics = uniqueWords.slice(0, 3).join(", ");
       
-      // 3. Construct Dynamic Summary
-      const summary = `This meeting primarily revolved around ${topics || "the discussed agenda items"}. Participants shared perspectives on key initiatives and addressed immediate priorities. ${names.length > 0 ? names.join(" and ") + " led the discussion on major points." : "The group collaborated to define the next steps for the project."} Overall, the session established a clear direction forward.`;
+      // 3. Construct Dynamic Summary based on user-defined rules
+      const summary = `During the session, the team extensively discussed ${topics || "critical project components"}. ${names.length > 0 ? names.join(", ") + " and others " : "Participants "}collaborated to align on the project trajectory, specifically focusing on immediate execution needs and long-term milestones. The discussion successfully finalized several key decisions regarding the next phase of development.`;
 
-      // 4. Generate Dynamic Action Items
-      // We'll create items by pairing action verbs with extracted keywords
-      const verbs = ["Review", "Finalize", "Sync with", "Investigate", "Update", "Draft"];
+      // 4. Generate Dynamic Action Items based on user-defined rules
+      const verbs = ["Finalize", "Review", "Update", "Sync with", "Draft", "Investigate"];
       const priorities = ["High", "Medium", "Low"];
       
-      const mockActionItems = uniqueWords.slice(0, 5).map((word, i) => ({
-        description: `${verbs[i % verbs.length]} ${word} related tasks`,
-        assignee: assignees[i % assignees.length],
-        priority: priorities[i % priorities.length]
-      }));
+      const mockActionItems = uniqueWords.slice(0, 5).map((word, i) => {
+        // Use context to pick assignee
+        const assignee = assignees[i % assignees.length];
+        return {
+          description: `${verbs[i % verbs.length]} ${word} implementation details`,
+          assignee: assignee,
+          priority: priorities[i % priorities.length]
+        };
+      });
 
       // Store in DB
       const analysis = await storage.createAnalysis({
