@@ -208,7 +208,7 @@ export default function Landing() {
                   type="submit"
                   onClick={handleSubmit}
                   disabled={isPending}
-                  className="flex justify-center gap-4 items-center mx-auto shadow-xl text-lg bg-background backdrop-blur-md font-bold isolation-auto border-foreground/10 before:absolute before:w-full before:transition-all before:duration-500 before:ease-out before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-foreground hover:text-background before:-z-10 before:aspect-square before:hover:scale-[2.5] before:hover:duration-500 relative z-10 px-8 py-4 overflow-hidden border-2 rounded-full group disabled:opacity-50 disabled:cursor-not-allowed transition-all transform-gpu"
+                  className="flex justify-center gap-4 items-center mx-auto shadow-xl text-lg bg-background backdrop-blur-md font-bold isolation-auto border-foreground/10 before:absolute before:w-full before:transition-all before:duration-700 before:ease-in-out before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-foreground hover:text-background before:-z-10 before:aspect-square before:hover:scale-[2.5] before:hover:duration-700 relative z-10 px-8 py-4 overflow-hidden border-2 rounded-full group disabled:opacity-50 disabled:cursor-not-allowed transition-all transform-gpu"
                 >
                   {isPending ? "Processing..." : "Analyze Meeting"}
                   <svg
