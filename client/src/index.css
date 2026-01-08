@@ -1,43 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Beige, Blue, Green Theme */
-  --background: 60 61% 93%; /* #F8F8E1 */
-  --foreground: 187 97% 13%; /* #013A42 Midnight Green */
+  /* Refined Midnight Palette */
+  --background: 60 61% 98%; /* Softer Off-White/Beige */
+  --foreground: 187 97% 11%; /* Deep Midnight Green */
   
-  --primary: 188 47% 69%; /* #8ACCD5 Non-Photo Blue */
-  --primary-foreground: 187 97% 13%;
+  --primary: 188 47% 62%; /* Refined Muted Blue */
+  --primary-foreground: 187 97% 98%;
   
-  --secondary: 60 61% 88%;
-  --secondary-foreground: 187 97% 13%;
+  --secondary: 188 20% 94%;
+  --secondary-foreground: 187 97% 11%;
   
-  --muted: 60 30% 85%;
-  --muted-foreground: 187 40% 30%;
+  --muted: 188 10% 90%;
+  --muted-foreground: 187 20% 40%;
   
-  --accent: 188 47% 85%;
-  --accent-foreground: 187 97% 13%;
+  --accent: 188 47% 92%;
+  --accent-foreground: 187 97% 11%;
   
-  --border: 187 30% 80%;
-  --input: 187 30% 80%;
-  --ring: 187 97% 13%;
+  --border: 187 15% 88%;
+  --input: 187 15% 88%;
+  --ring: 187 97% 11%;
   
-  --radius: 1rem;
+  --radius: 0.75rem; /* Slightly tighter radius for professional feel */
   
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Outfit', sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
 
-  /* Card and Popover colors */
-  --card: 60 61% 95%;
-  --card-foreground: 187 97% 13%;
-  --card-border: 187 30% 85%;
-
-  --popover: 60 61% 95%;
-  --popover-foreground: 187 97% 13%;
-  --popover-border: 187 30% 85%;
+  --card: 0 0% 100%;
+  --card-foreground: 187 97% 11%;
+  --card-border: 187 15% 92%;
 }
 
 @layer base {
@@ -48,35 +43,12 @@
     @apply bg-background text-foreground antialiased font-sans;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display tracking-tight text-foreground;
+    @apply font-display tracking-tight text-foreground font-bold;
   }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  
   .glass-panel {
-    @apply bg-white/40 backdrop-blur-xl border border-white/20 shadow-xl shadow-black/5;
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm;
   }
-  
-  .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
-  }
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/30 transition-colors;
 }

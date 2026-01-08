@@ -111,29 +111,29 @@ export default function Landing() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-center mb-10 space-y-6 w-full"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-foreground text-[10px] font-black uppercase tracking-[0.25em] mb-4 border border-primary/20 shadow-sm">
-              <Sparkles size={12} className="text-foreground animate-pulse" />
-              <span>AI Intelligence for Teams</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-foreground text-xs font-semibold mb-4 border border-primary/20">
+              <Sparkles size={14} className="text-foreground" />
+              <span>AI Meeting Intelligence</span>
             </div>
             
-            <h1 className="text-6xl md:text-8xl font-display font-extrabold text-foreground text-balance leading-[1.1] tracking-tighter">
-              Turn Chaos into <span className="text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground/80 to-primary">Action</span>
+            <h1 className="text-5xl md:text-7xl font-display font-extrabold text-foreground text-balance leading-tight tracking-tight">
+              Turn Meeting Chaos into <span className="text-primary">Clear Action</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto text-balance leading-relaxed font-medium">
-              Synthesize meeting transcripts instantly. Our high-performance AI extracts executive summaries and maps tasks for you.
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-balance font-medium">
+              Transform transcripts into executive summaries and prioritized action items with precision.
             </p>
 
             <div className="flex flex-wrap justify-center gap-3 mt-4">
               {SAMPLE_TRANSCRIPTS.map((sample, i) => (
                 <Button 
                   key={i}
-                  variant="outline" 
+                  variant="secondary" 
                   size="sm"
                   onClick={() => loadSample(sample.content)}
-                  className="rounded-full bg-background/50 border-primary/30 text-foreground/70 hover:text-foreground hover:border-foreground/30 transition-all duration-300 text-[10px] font-black uppercase tracking-[0.15em] h-8 shadow-sm no-default-hover-elevate"
+                  className="rounded-full font-semibold text-xs h-9"
                 >
-                  <PlayCircle className="mr-2 h-3.5 w-3.5 text-primary" />
+                  <PlayCircle className="mr-2 h-4 w-4" />
                   {sample.title}
                 </Button>
               ))}

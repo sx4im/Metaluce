@@ -81,21 +81,21 @@ export default function AnalysisResult() {
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 mb-1">
+            <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground mb-1">
               <span>Analysis #{analysis.id}</span>
               <span>•</span>
               <span>{new Date(analysis.createdAt!).toLocaleDateString()}</span>
             </div>
-            <h1 className="text-4xl font-display font-black text-foreground uppercase tracking-tight italic">Analysis Results</h1>
+            <h1 className="text-4xl font-display font-extrabold text-foreground tracking-tight">Analysis Results</h1>
           </div>
           
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={copySummary} className="rounded-full border-foreground/10 text-[10px] font-black uppercase tracking-widest hover:bg-foreground hover:text-background transition-all">
-              <Copy className="w-3 h-3 mr-2" />
+            <Button variant="outline" size="sm" onClick={copySummary} className="rounded-full font-semibold">
+              <Copy className="w-4 h-4 mr-2" />
               Copy Summary
             </Button>
-            <Button variant="outline" size="sm" className="rounded-full border-foreground/10 text-[10px] font-black uppercase tracking-widest hover:bg-foreground hover:text-background transition-all">
-              <Download className="w-3 h-3 mr-2" />
+            <Button variant="outline" size="sm" className="rounded-full font-semibold">
+              <Download className="w-4 h-4 mr-2" />
               Export PDF
             </Button>
           </div>
@@ -103,15 +103,15 @@ export default function AnalysisResult() {
 
         {/* Executive Summary Section */}
         <section className="mb-12">
-          <Card className="p-8 md:p-12 bg-white/40 backdrop-blur-xl shadow-2xl border-foreground/5 overflow-hidden relative rounded-[2.5rem]">
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-foreground/20" />
+          <Card className="p-8 md:p-10 bg-white shadow-sm border-border overflow-hidden relative rounded-3xl">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-primary" />
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2.5 bg-foreground/5 rounded-xl text-foreground">
+              <div className="p-2.5 bg-primary/10 rounded-xl text-primary">
                 <CheckCircle2 size={24} />
               </div>
-              <h2 className="text-xl font-black uppercase tracking-[0.1em] italic">Executive Summary</h2>
+              <h2 className="text-2xl font-bold tracking-tight">Executive Summary</h2>
             </div>
-            <div className="prose prose-slate max-w-none text-foreground/80 leading-relaxed text-lg font-medium">
+            <div className="prose prose-slate max-w-none text-foreground/80 leading-relaxed text-lg">
               {analysis.summary.split('\n').map((para, i) => (
                 <p key={i} className="mb-4">{para}</p>
               ))}
@@ -122,10 +122,10 @@ export default function AnalysisResult() {
         {/* Action Board Section */}
         <section>
           <div className="flex items-center gap-3 mb-8">
-            <div className="p-2.5 bg-primary/20 rounded-xl text-foreground">
+            <div className="p-2.5 bg-primary/10 rounded-xl text-primary">
               <AlertCircle size={24} />
             </div>
-            <h2 className="text-xl font-black uppercase tracking-[0.1em] italic">Action Plan</h2>
+            <h2 className="text-2xl font-bold tracking-tight">Action Plan</h2>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8 overflow-x-auto pb-8">
