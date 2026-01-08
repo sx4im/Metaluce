@@ -19,10 +19,10 @@ export async function registerRoutes(
 
       // 1. Simple Keyword/Entity Extraction
       const words = originalText.split(/\s+/).filter(w => w.length > 4);
-      const uniqueWords = [...new Set(words)];
+      const uniqueWords = Array.from(new Set(words));
       
       // Extract potential names (Capitalized words not at start of sentence)
-      const names = [...new Set(originalText.match(/\b[A-Z][a-z]+\b/g) || [])]
+      const names = Array.from(new Set(originalText.match(/\b[A-Z][a-z]+\b/g) || []))
         .filter(name => !["The", "And", "This", "That", "Meeting"].includes(name))
         .slice(0, 5);
       
