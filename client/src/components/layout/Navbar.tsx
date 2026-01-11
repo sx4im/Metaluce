@@ -1,16 +1,16 @@
 import { Link } from "wouter";
-import { BrainCircuit, List } from "lucide-react";
+import { Sparkles, List } from "lucide-react";
 
 export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-foreground/5 bg-background/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 group cursor-pointer">
-          <div className="w-9 h-9 rounded-xl bg-foreground flex items-center justify-center text-background shadow-sm group-hover:bg-primary transition-colors duration-300">
-            <BrainCircuit size={20} />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-foreground flex items-center justify-center text-background shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
+            <Sparkles size={20} className="animate-pulse" />
           </div>
           <span className="font-display font-extrabold text-xl tracking-tight text-foreground">
-            Minute<span className="text-primary-foreground/40 font-bold">Mind</span>
+            Meta<span className="text-primary">luce</span>
           </span>
         </Link>
 

@@ -98,23 +98,28 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden relative flex flex-col selection:bg-primary/30 selection:text-foreground">
       {/* Background Layer: Fixed to stay behind everything */}
-      <div className="fixed inset-0 w-full h-full bg-background z-0 pointer-events-none">
+      <div className="fixed inset-0 w-full h-full bg-background z-0">
         <Spotlight
-          className="-top-40 left-0 md:left-60 md:-top-20"
+          className="-top-40 left-0 md:left-60 md:-top-20 pointer-events-none"
           fill="rgba(1, 58, 66, 0.1)"
         />
-        <div className="absolute inset-0 opacity-40">
+        <div className="absolute inset-0 opacity-40 pointer-events-auto">
           <SplineScene 
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-full"
           />
         </div>
-        <div className="absolute inset-0 bg-background z-10 [mask-image:radial-gradient(transparent,white)] opacity-60" />
+        {/* Overlay removed to allow Spline interactivity */}
+        {/* <div className="absolute inset-0 bg-background z-[10] [mask-image:radial-gradient(transparent,white)] opacity-60 pointer-events-none" /> */}
       </div>
       
-      <div className="relative z-10 flex flex-col flex-1">
-        <Navbar />
-        <DemoGuide />
+      <div className="relative z-10 flex flex-col flex-1 pointer-events-none">
+        <div className="pointer-events-auto">
+          <Navbar />
+        </div>
+        <div className="pointer-events-auto">
+          <DemoGuide />
+        </div>
         
         <main className="container mx-auto px-4 py-8 md:py-16 max-w-5xl flex flex-col items-center justify-center min-h-[calc(100vh-64px)]">
           <motion.div 
@@ -132,11 +137,11 @@ export default function Landing() {
               Turn Meeting Chaos into <span className="text-primary">Clear Action</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-balance font-medium">
+            <p className="text-lg md:text-xl text-foreground max-w-2xl mx-auto text-balance font-medium">
               Transform transcripts into executive summaries and prioritized action items with precision.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-3 mt-4">
+            <div className="flex flex-wrap justify-center gap-3 mt-4 pointer-events-auto">
               {SAMPLE_TRANSCRIPTS.map((sample, i) => (
                 <Button 
                   key={i}
@@ -169,7 +174,7 @@ export default function Landing() {
                   </label>
                 </div>
                 
-                <div className="flex gap-2">
+                <div className="flex gap-2 pointer-events-auto">
                   <input
                     type="file"
                     accept=".txt"
@@ -195,7 +200,7 @@ export default function Landing() {
                   onChange={handleTextChange}
                   placeholder="Paste your meeting notes or transcript here (e.g., 'Alice: Let's launch on Friday...')"
                   className={cn(
-                    "min-h-[400px] text-lg leading-relaxed resize-none p-10 rounded-[3rem] border-border focus:border-foreground/20 focus:ring-0 transition-all shadow-inner bg-white/30 placeholder:text-foreground/20 text-foreground",
+                    "min-h-[400px] text-lg leading-relaxed resize-none p-10 rounded-[3rem] border-border focus:border-foreground/20 focus:ring-0 transition-all shadow-inner bg-white/30 placeholder:text-foreground/20 text-foreground pointer-events-auto",
                     error ? 'border-destructive/30 ring-destructive/5' : ''
                   )}
                 />
@@ -215,7 +220,7 @@ export default function Landing() {
                 </AnimatePresence>
               </div>
 
-              <div className="flex justify-center pt-8">
+              <div className="flex justify-center pt-8 pointer-events-auto">
                 <button
                   onClick={handleSubmit}
                   disabled={isPending}
@@ -237,3 +242,4 @@ export default function Landing() {
     </div>
   );
 }
+
