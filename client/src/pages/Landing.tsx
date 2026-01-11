@@ -13,6 +13,9 @@ import { DemoGuide } from "@/components/DemoGuide";
 import { Boxes } from "@/components/ui/background-boxes";
 import { cn } from "@/lib/utils";
 
+import { SplineScene } from "@/components/ui/splite";
+import { Spotlight } from "@/components/ui/spotlight";
+
 export default function Landing() {
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -96,8 +99,17 @@ export default function Landing() {
     <div className="min-h-screen bg-background overflow-x-hidden relative flex flex-col selection:bg-primary/30 selection:text-foreground">
       {/* Background Layer: Fixed to stay behind everything */}
       <div className="fixed inset-0 w-full h-full bg-background z-0 pointer-events-none">
+        <Spotlight
+          className="-top-40 left-0 md:left-60 md:-top-20"
+          fill="rgba(1, 58, 66, 0.1)"
+        />
+        <div className="absolute inset-0 opacity-40">
+          <SplineScene 
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            className="w-full h-full"
+          />
+        </div>
         <div className="absolute inset-0 bg-background z-10 [mask-image:radial-gradient(transparent,white)] opacity-60" />
-        <Boxes className="opacity-10 [&_div]:border-foreground/10 [&_svg]:text-foreground/10" />
       </div>
       
       <div className="relative z-10 flex flex-col flex-1">
