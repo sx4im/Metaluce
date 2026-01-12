@@ -9,7 +9,7 @@
   --background: 60 61% 98%; /* Softer Off-White/Beige */
   --foreground: 187 97% 11%; /* Deep Midnight Green */
   
-  --primary: 188 47% 62%; /* Refined Muted Blue */
+  --primary: 205 98% 24%; /* #01497b */
   --primary-foreground: 187 97% 98%;
   
   --secondary: 188 20% 94%;
@@ -50,7 +50,7 @@
 @layer components {
   .entry-button {
     --line_color: #013A42;
-    --back_color: #8ACCD5;
+    --back_color: #01497b;
     position: relative;
     z-index: 0;
     width: 240px;
@@ -127,6 +127,7 @@
     right: 0;
   }
   .entry-button:hover {
+    color: #ffffff;
     letter-spacing: 6px;
   }
   .entry-button:hover::before,

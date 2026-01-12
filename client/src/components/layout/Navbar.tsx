@@ -1,27 +1,43 @@
 import { Link } from "wouter";
-import { Sparkles, List } from "lucide-react";
+import { Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
 
 export function Navbar() {
+  const { user, logoutMutation } = useAuth();
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-foreground/5 bg-background/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5 group cursor-pointer">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-foreground flex items-center justify-center text-background shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
-            <Sparkles size={20} className="animate-pulse" />
+        <Link href="/" className="flex items-center gap-0 group cursor-pointer">
+          <div className="w-16 h-16 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+            <img src="/favicon.png" alt="Metaluce Logo" className="w-full h-full object-contain" />
           </div>
-          <span className="font-display font-extrabold text-xl tracking-tight text-foreground">
+          <span className="-ml-2 font-display font-extrabold text-xl tracking-tight text-foreground">
             Meta<span className="text-primary">luce</span>
           </span>
         </Link>
 
-        <div className="flex items-center gap-8">
-          <Link href="/" className="text-sm font-semibold text-foreground/60 hover:text-foreground transition-colors">
-            New Analysis
-          </Link>
-          <Link href="/history" className="text-sm font-semibold text-foreground/60 hover:text-foreground transition-colors flex items-center gap-2">
-            <List size={16} />
-            History
-          </Link>
+        <div>
+          {user ? (
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium hidden md:inline-block">
+                Hi, {user.username}
+              </span>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => logoutMutation.mutate()}
+                disabled={logoutMutation.isPending}
+              >
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Link href="/auth">
+              <Button size="sm">Login</Button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

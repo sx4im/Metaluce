@@ -9,7 +9,7 @@ Bob: Yes, assuming they arrive on time.
 David: I'll prepare the test cases for QA.`
   },
   {
-    title: "Marketing Sync",
+    title: "Marketing Campaign Sync",
     content: `Sarah: Our Q4 social media campaign needs to go live on October 1st.
 Mike: We still haven't picked the lead agency for the video production.
 Sarah: Let's pick 'CreativeFlow' based on their proposal.

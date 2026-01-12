@@ -15,6 +15,9 @@ import { cn } from "@/lib/utils";
 
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
+import AnimatedTextCycle from "@/components/ui/animated-text-cycle";
+
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Landing() {
   const [text, setText] = useState("");
@@ -22,6 +25,7 @@ export default function Landing() {
   const [, setLocation] = useLocation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
   
   const { mutate: analyze, isPending } = useCreateAnalysis();
 
@@ -70,6 +74,15 @@ export default function Landing() {
   };
 
   const handleSubmit = () => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please login or create an account to analyze transcripts.", 
+      });
+      setLocation("/auth");
+      return;
+    }
+
     const cleanedText = cleanTranscript(text);
     
     if (!cleanedText) {
@@ -133,8 +146,12 @@ export default function Landing() {
               <span>AI Meeting Intelligence</span>
             </div>
             
+
             <h1 className="text-5xl md:text-7xl font-display font-extrabold text-foreground text-balance leading-tight tracking-tight">
-              Turn Meeting Chaos into <span className="text-primary">Clear Action</span>
+              Turn Meeting Chaos into <AnimatedTextCycle 
+                words={["Clear Action", "Real Impact", "Team Goals"]} 
+                className="text-primary" 
+              />
             </h1>
             
             <p className="text-lg md:text-xl text-foreground max-w-2xl mx-auto text-balance font-medium">

@@ -8,12 +8,17 @@ import AnalysisResult from "@/pages/AnalysisResult";
 import History from "@/pages/History";
 import NotFound from "@/pages/not-found";
 
+import { AuthProvider } from "@/hooks/use-auth";
+import AuthPage from "@/pages/AuthPage";
+import { ProtectedRoute } from "./lib/protected-route";
+
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
-      <Route path="/analysis/:id" component={AnalysisResult} />
-      <Route path="/history" component={History} />
+      <Route path="/auth" component={AuthPage} />
+      <ProtectedRoute path="/analysis/:id" component={AnalysisResult} />
+      <ProtectedRoute path="/history" component={History} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -22,10 +27,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
