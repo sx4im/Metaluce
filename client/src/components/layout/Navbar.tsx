@@ -27,6 +27,7 @@ export function Navbar() {
               <Button 
                 variant="outline" 
                 size="sm"
+                className="transition-all duration-500 hover:bg-primary hover:text-primary-foreground hover:border-primary"
                 onClick={() => logoutMutation.mutate()}
                 disabled={logoutMutation.isPending}
               >
@@ -34,9 +35,19 @@ export function Navbar() {
               </Button>
             </div>
           ) : (
-            <Link href="/auth">
-              <Button size="sm">Login</Button>
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href="/auth?mode=login">
+                <button className="relative overflow-hidden h-9 px-6 rounded-full bg-foreground/5 text-foreground border border-border cursor-pointer group transition-all duration-300 hover:border-primary/30 font-medium text-sm">
+                  <span className="relative z-10 transition-colors duration-[800ms] group-hover:text-white">Login</span>
+                  <span className="absolute top-0 left-0 w-full h-full rounded-full bg-primary transform scale-x-0 origin-left transition-transform duration-[800ms] ease-out group-hover:scale-x-100"></span>
+                </button>
+              </Link>
+              <Link href="/auth?mode=register">
+                <button className="h-9 px-6 rounded-full bg-primary text-white border border-primary cursor-pointer font-medium text-sm">
+                  Sign Up
+                </button>
+              </Link>
+            </div>
           )}
         </div>
       </div>

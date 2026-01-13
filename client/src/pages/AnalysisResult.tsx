@@ -1,6 +1,8 @@
 import { useParams } from "wouter";
 import { motion } from "framer-motion";
-import { CheckCircle2, AlertCircle, Clock, Copy, Download, Share2 } from "lucide-react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { Sparkles, AlertCircle, Clock, Copy, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,14 +11,16 @@ import { Navbar } from "@/components/layout/Navbar";
 import { useAnalysis } from "@/hooks/use-analysis";
 import { type ActionItem } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
+import ProceduralGroundBackground from "@/components/ui/procedural-ground-background";
+
 
 // Kanban Column Component
-function KanbanColumn({ title, items, colorClass }: { title: string; items: ActionItem[]; colorClass: string }) {
+function KanbanColumn({ title, items }: { title: string; items: ActionItem[] }) {
   return (
     <div className="flex-1 min-w-[300px] flex flex-col gap-4">
-      <div className={`flex items-center justify-between px-4 py-3 rounded-xl bg-white border ${colorClass} shadow-sm`}>
+      <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-white/30 backdrop-blur-sm border border-foreground/5 shadow-sm">
         <h3 className="font-semibold text-sm tracking-wide uppercase text-foreground/80">{title}</h3>
-        <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md text-xs font-bold">
+        <span className="bg-white/50 text-foreground/60 px-2 py-0.5 rounded-md text-xs font-bold">
           {items.length}
         </span>
       </div>
@@ -28,7 +32,7 @@ function KanbanColumn({ title, items, colorClass }: { title: string; items: Acti
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
-            className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-primary/20 transition-all cursor-default group"
+            className="p-4 bg-white/40 backdrop-blur-sm rounded-xl border border-foreground/5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all cursor-default group"
           >
             <p className="text-sm font-medium text-foreground mb-3 leading-snug">
               {item.description}
@@ -74,11 +78,42 @@ export default function AnalysisResult() {
     toast({ title: "Copied!", description: "Summary copied to clipboard." });
   };
 
+  const handleExportPDF = async () => {
+    const element = document.getElementById('analysis-content');
+    if (!element) return;
+
+    try {
+      toast({ title: "Generating PDF...", description: "Please wait while we prepare your document." });
+      
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#fafaf9', // Light beige to match site theme (bg-background)
+        ignoreElements: (node) => node.classList.contains('no-print') // Optional helper
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`analysis-${id}.pdf`);
+
+      toast({ title: "Success", description: "PDF downloaded successfully." });
+    } catch (error) {
+      console.error("PDF Export Error:", error);
+      toast({ title: "Error", description: "Failed to generate PDF.", variant: "destructive" });
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent relative">
+      <ProceduralGroundBackground />
+
       <Navbar />
       
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
+      <main id="analysis-content" className="container mx-auto px-4 py-8 max-w-7xl relative z-30">
         <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground mb-1">
@@ -90,12 +125,22 @@ export default function AnalysisResult() {
           </div>
           
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={copySummary} className="rounded-full font-semibold">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={copySummary} 
+              className="h-9 rounded-full font-semibold transition-all duration-500 hover:bg-primary hover:text-primary-foreground hover:border-primary"
+            >
               <Copy className="w-4 h-4 mr-2" />
               Copy Summary
             </Button>
-            <Button variant="outline" size="sm" className="rounded-full font-semibold">
-              <Download className="w-4 h-4 mr-2" />
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleExportPDF}
+              className="h-9 rounded-full font-semibold transition-all duration-500 hover:bg-primary hover:text-primary-foreground hover:border-primary"
+            >
+              <Download className="w-3.5 h-3.5 mr-2" />
               Export PDF
             </Button>
           </div>
@@ -103,11 +148,11 @@ export default function AnalysisResult() {
 
         {/* Executive Summary Section */}
         <section className="mb-12">
-          <Card className="p-8 md:p-10 bg-white shadow-sm border-border overflow-hidden relative rounded-3xl">
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-primary" />
+          <Card className="p-8 md:p-10 bg-white/30 backdrop-blur-sm shadow-sm border border-foreground/5 overflow-hidden relative rounded-3xl">
+            <div className="absolute top-0 left-0 w-1 h-full bg-primary/60" />
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2.5 bg-primary/10 rounded-xl text-primary">
-                <CheckCircle2 size={24} />
+              <div className="p-2.5 bg-primary/10 backdrop-blur-sm rounded-xl text-primary">
+                <Sparkles size={22} />
               </div>
               <h2 className="text-2xl font-bold tracking-tight">Executive Summary</h2>
             </div>
@@ -132,17 +177,14 @@ export default function AnalysisResult() {
             <KanbanColumn 
               title="Critical" 
               items={highPriority} 
-              colorClass="border-red-200/50 bg-red-50/30" 
             />
             <KanbanColumn 
               title="Pending" 
               items={mediumPriority} 
-              colorClass="border-amber-200/50 bg-amber-50/30" 
             />
             <KanbanColumn 
               title="Standard" 
               items={lowPriority} 
-              colorClass="border-emerald-200/50 bg-emerald-50/30" 
             />
           </div>
         </section>

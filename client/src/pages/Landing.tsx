@@ -10,7 +10,7 @@ import { cleanTranscript } from "@/utils/transcriptParser";
 import { useToast } from "@/hooks/use-toast";
 import { SAMPLE_TRANSCRIPTS } from "@/utils/samples";
 import { DemoGuide } from "@/components/DemoGuide";
-import { Boxes } from "@/components/ui/background-boxes";
+import GeometricBackground from "@/components/ui/geometric-background";
 import { cn } from "@/lib/utils";
 
 import { SplineScene } from "@/components/ui/splite";
@@ -112,6 +112,7 @@ export default function Landing() {
     <div className="min-h-screen bg-background overflow-x-hidden relative flex flex-col selection:bg-primary/30 selection:text-foreground">
       {/* Background Layer: Fixed to stay behind everything */}
       <div className="fixed inset-0 w-full h-full bg-background z-0">
+        <GeometricBackground />
         <Spotlight
           className="-top-40 left-0 md:left-60 md:-top-20 pointer-events-none"
           fill="rgba(1, 58, 66, 0.1)"

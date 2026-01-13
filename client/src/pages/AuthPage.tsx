@@ -23,7 +23,11 @@ import Ballpit from "@/components/ui/ballpit";
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
   const [, setLocation] = useLocation();
-  const [isLogin, setIsLogin] = useState(false);
+  
+  // Check URL parameters to determine initial mode
+  const urlParams = new URLSearchParams(window.location.search);
+  const mode = urlParams.get('mode');
+  const [isLogin, setIsLogin] = useState(mode === 'login');
 
   useEffect(() => {
     if (user) {
@@ -46,7 +50,7 @@ export default function AuthPage() {
             lightIntensity={300}
             minSize={0.6}
             maxSize={1.2}
-            gravity={0.01}
+            gravity={0.0050}
             maxVelocity={0.12}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
@@ -65,7 +69,7 @@ export default function AuthPage() {
 
           <Button 
             variant="ghost" 
-            className="text-primary hover:bg-primary hover:text-primary-foreground rounded-full px-6 transition-all font-bold"
+            className="text-primary hover:bg-primary hover:text-primary-foreground rounded-full px-6 transition-all duration-500 font-bold"
             onClick={() => setLocation("/")}
           >
             <ArrowLeft className="mr-2 w-4 h-4" /> Back to website
