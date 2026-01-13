@@ -8,7 +8,7 @@ export function DemoGuide() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-    }, 15000); // 15 seconds
+    }, 8000); // 8 seconds
 
     return () => clearTimeout(timer);
   }, []);

@@ -5,14 +5,15 @@ import type {
   ToastProps,
 } from "@/components/ui/toast"
 
-const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 5000
+const TOAST_LIMIT = 5
+const TOAST_REMOVE_DELAY = 1000000 // Just a safeguard, Radix handles auto-dismiss
 
 type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
+  duration?: number
 }
 
 const actionTypes = {
@@ -139,7 +140,11 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, "id">
 
-function toast({ ...props }: Toast) {
+interface ToastOptions extends Toast {
+  duration?: number
+}
+
+function toast({ duration = 4000, ...props }: ToastOptions) {
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -155,6 +160,7 @@ function toast({ ...props }: Toast) {
       ...props,
       id,
       open: true,
+      duration,
       onOpenChange: (open) => {
         if (!open) dismiss()
       },
