@@ -88,7 +88,29 @@ export default function AuthPage() {
 
       {/* Right Side - Form */}
       <div className="flex flex-col p-6 lg:p-12 overflow-y-auto bg-background">
+
+
         <div className="w-full max-w-md space-y-8 m-auto">
+          {/* Mobile Header */}
+          <div className="lg:hidden w-full flex items-center justify-between relative z-50 pb-8">
+            <div className="flex items-center gap-0 cursor-pointer -ml-2" onClick={() => setLocation("/")}>
+               <div className="w-8 h-8 flex items-center justify-center">
+                  <img src="/favicon.png" alt="Metaluce Logo" className="w-full h-full object-contain" />
+               </div>
+               <span className="font-display font-extrabold text-xl tracking-tight text-foreground -ml-1">
+                 Meta<span className="text-primary">luce</span>
+               </span>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="text-primary hover:bg-primary hover:text-primary-foreground rounded-full px-4 transition-all duration-500 font-bold -mr-2"
+              onClick={() => setLocation("/")}
+            >
+              <ArrowLeft className="mr-2 w-4 h-4" /> Back to website
+            </Button>
+          </div>
+
           <div className="space-y-3">
             <h2 className="text-4xl font-bold tracking-tight text-foreground font-display">
               {isLogin ? "Welcome back" : "Create an account"}
