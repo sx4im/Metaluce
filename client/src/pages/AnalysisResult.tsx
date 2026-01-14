@@ -1,7 +1,7 @@
 import { useParams } from "wouter";
 import { motion } from "framer-motion";
-import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { Sparkles, AlertCircle, Clock, Copy, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -17,7 +17,7 @@ import ProceduralGroundBackground from "@/components/ui/procedural-ground-backgr
 // Kanban Column Component
 function KanbanColumn({ title, items }: { title: string; items: ActionItem[] }) {
   return (
-    <div className="flex-1 min-w-[300px] flex flex-col gap-4">
+    <div className="flex-1 min-w-full md:min-w-[300px] flex flex-col gap-4">
       <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-white/30 backdrop-blur-sm border border-foreground/5 shadow-sm">
         <h3 className="font-semibold text-sm tracking-wide uppercase text-foreground/80">{title}</h3>
         <span className="bg-white/50 text-foreground/60 px-2 py-0.5 rounded-md text-xs font-bold">
@@ -79,28 +79,107 @@ export default function AnalysisResult() {
   };
 
   const handleExportPDF = async () => {
-    const element = document.getElementById('analysis-content');
-    if (!element) return;
-
     try {
-      toast({ title: "Generating PDF...", description: "Please wait while we prepare your document." });
+      // Removed "Generating PDF..." toast per user request
       
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#fafaf9', // Light beige to match site theme (bg-background)
-        ignoreElements: (node) => node.classList.contains('no-print') // Optional helper
+      const doc = new jsPDF();
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const margin = 20;
+      const contentWidth = pageWidth - (margin * 2);
+      let cursorY = margin;
+
+      // Theme Colors
+      const primaryColor = [1, 73, 123] as [number, number, number]; // #01497b
+      const foregroundColor = [1, 58, 66] as [number, number, number]; // #013a42
+      
+      // Helper to add text with auto-paging
+      const addSection = (title: string, text: string) => {
+        // Add Section Title
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.setTextColor(...primaryColor);
+        
+        // Check for page break
+        if (cursorY + 10 > pageHeight - margin) {
+          doc.addPage();
+          cursorY = margin;
+        }
+        
+        doc.text(title, margin, cursorY);
+        cursorY += 10;
+        
+        // Add Section Body
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(...foregroundColor);
+        
+        const lines = doc.splitTextToSize(text, contentWidth);
+        const lineHeight = 5;
+        
+        lines.forEach((line: string) => {
+           if (cursorY + lineHeight > pageHeight - margin) {
+             doc.addPage();
+             cursorY = margin;
+           }
+           doc.text(line, margin, cursorY);
+           cursorY += lineHeight;
+        });
+        
+        cursorY += 10; // Spacing after section
+      };
+
+      // 1. Original Transcript
+      addSection("Original Transcript", analysis.originalText);
+      
+      // 2. Executive Summary
+      addSection("Executive Summary", analysis.summary);
+      
+      // 3. Action Plan (Table)
+      // Check if we need a page break before table
+      if (cursorY + 20 > pageHeight - margin) {
+        doc.addPage();
+        cursorY = margin;
+      }
+      
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.setTextColor(...primaryColor);
+      doc.text("Action Plan", margin, cursorY);
+      cursorY += 5; // Spacing for autotable
+      
+      const tableData = actionItems.map(item => [
+        item.description,
+        item.assignee, 
+        // No deadline in schema, leaving empty as placeholder per requirements implicitly asking for standard columns
+        "-", 
+        item.priority
+      ]);
+
+      autoTable(doc, {
+        startY: cursorY,
+        head: [['Action Item', 'Responsible', 'Deadline', 'Status']],
+        body: tableData,
+        headStyles: {
+          fillColor: primaryColor,
+          textColor: 255,
+          fontStyle: 'bold'
+        },
+        styles: {
+          font: "helvetica",
+          fontSize: 10,
+          textColor: foregroundColor
+        },
+        margin: { top: margin, right: margin, bottom: margin, left: margin },
       });
 
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      doc.save(`analysis-${id}.pdf`);
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`analysis-${id}.pdf`);
-
-      toast({ title: "Success", description: "PDF downloaded successfully." });
+      toast({ 
+        title: "Success", 
+        description: "PDF downloaded successfully.",
+        duration: 4000 
+      });
     } catch (error) {
       console.error("PDF Export Error:", error);
       toast({ title: "Error", description: "Failed to generate PDF.", variant: "destructive" });
@@ -148,7 +227,7 @@ export default function AnalysisResult() {
 
         {/* Executive Summary Section */}
         <section className="mb-12">
-          <Card className="p-8 md:p-10 bg-white/30 backdrop-blur-sm shadow-sm border border-foreground/5 overflow-hidden relative rounded-3xl">
+          <Card className="p-6 md:p-10 bg-white/30 backdrop-blur-sm shadow-sm border border-foreground/5 overflow-hidden relative rounded-3xl">
             <div className="absolute top-0 left-0 w-1 h-full bg-primary/60" />
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2.5 bg-primary/10 backdrop-blur-sm rounded-xl text-primary">
@@ -196,7 +275,7 @@ export default function AnalysisResult() {
               <span className="mr-2">Original Transcript</span>
               <div className="h-px bg-foreground/10 flex-1 ml-4" />
             </summary>
-            <div className="mt-6 p-10 bg-white/20 backdrop-blur-sm rounded-[2rem] font-mono text-sm text-foreground/60 whitespace-pre-wrap max-h-96 overflow-y-auto border border-foreground/5 shadow-inner">
+            <div className="mt-6 p-6 md:p-10 bg-white/20 backdrop-blur-sm rounded-[2rem] font-mono text-sm text-foreground/60 whitespace-pre-wrap max-h-96 overflow-y-auto border border-foreground/5 shadow-inner">
               {analysis.originalText}
             </div>
           </details>

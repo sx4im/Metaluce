@@ -87,7 +87,7 @@ export default function AuthPage() {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex items-center justify-center p-8 lg:p-12 overflow-y-auto bg-background">
+      <div className="flex items-center justify-center p-6 lg:p-12 overflow-y-auto bg-background">
         <div className="w-full max-w-md space-y-8">
           <div className="space-y-3">
             <h2 className="text-4xl font-bold tracking-tight text-foreground font-display">

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, Sparkles, FileText, ArrowRight, BrainCircuit, AlertCircle, PlayCircle } from "lucide-react";
@@ -35,11 +35,14 @@ export default function Landing() {
   };
 
   const loadSample = (sampleText: string) => {
+    if (text === sampleText) return;
+    
     setText(sampleText);
     setError(null);
     toast({
       title: "Sample loaded",
       description: "You can now click analyze to see the demo.",
+      duration: 4000,
     });
   };
 
@@ -108,6 +111,16 @@ export default function Landing() {
     );
   };
 
+  // Optimization: Detect mobile to disable heavy Spline scene
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background overflow-x-hidden relative flex flex-col selection:bg-primary/30 selection:text-foreground">
       {/* Background Layer: Fixed to stay behind everything */}
@@ -117,12 +130,15 @@ export default function Landing() {
           className="-top-40 left-0 md:left-60 md:-top-20 pointer-events-none"
           fill="rgba(1, 58, 66, 0.1)"
         />
-        <div className="absolute inset-0 opacity-40 pointer-events-auto">
-          <SplineScene 
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full"
-          />
-        </div>
+        {/* Optimization: Only render Spline on desktop to fix mobile lag */}
+        {isDesktop && (
+          <div className="absolute inset-0 opacity-40 pointer-events-auto">
+            <SplineScene 
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              className="w-full h-full"
+            />
+          </div>
+        )}
         {/* Overlay removed to allow Spline interactivity */}
         {/* <div className="absolute inset-0 bg-background z-[10] [mask-image:radial-gradient(transparent,white)] opacity-60 pointer-events-none" /> */}
       </div>
@@ -140,7 +156,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-10 space-y-6 w-full"
+            className="text-center mb-10 space-y-3 md:space-y-6 w-full"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-foreground text-xs font-semibold mb-4 border border-primary/20">
               <Sparkles size={14} className="text-foreground" />
@@ -148,27 +164,27 @@ export default function Landing() {
             </div>
             
 
-            <h1 className="text-5xl md:text-7xl font-display font-extrabold text-foreground text-balance leading-tight tracking-tight">
+            <h1 className="text-4xl md:text-7xl font-display font-extrabold text-foreground text-balance leading-tight tracking-tight px-2">
               Turn Meeting Chaos into <AnimatedTextCycle 
                 words={["Clear Action", "Real Impact", "Team Goals"]} 
                 className="text-primary" 
               />
             </h1>
             
-            <p className="text-lg md:text-xl text-foreground max-w-2xl mx-auto text-balance font-medium">
+            <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed px-4 font-normal">
               Transform transcripts into executive summaries and prioritized action items with precision.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-3 mt-4 pointer-events-auto">
+            <div className="flex flex-wrap justify-center gap-2 md:gap-3 mt-6 pointer-events-auto">
               {SAMPLE_TRANSCRIPTS.map((sample, i) => (
                 <Button 
                   key={i}
                   variant="secondary" 
                   size="sm"
                   onClick={() => loadSample(sample.content)}
-                  className="rounded-full font-semibold text-xs h-9"
+                  className="rounded-full font-semibold text-[10px] md:text-xs h-8 md:h-9 px-3 md:px-4"
                 >
-                  <PlayCircle className="mr-2 h-4 w-4" />
+                  <PlayCircle className="mr-1.5 h-3.5 w-3.5" />
                   {sample.title}
                 </Button>
               ))}
@@ -179,7 +195,7 @@ export default function Landing() {
             initial={{ opacity: 0, scale: 0.98, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full bg-background/40 backdrop-blur-3xl rounded-[3.5rem] shadow-[0_40px_80px_-20px_rgba(1,58,66,0.1)] border border-primary/20 p-8 md:p-14 relative overflow-hidden"
+            className="w-full bg-background/40 backdrop-blur-3xl rounded-[2.5rem] md:rounded-[3.5rem] shadow-[0_40px_80px_-20px_rgba(1,58,66,0.1)] border border-primary/20 p-6 md:p-14 relative overflow-hidden"
           >
             <div className="relative z-10 space-y-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -218,7 +234,7 @@ export default function Landing() {
                   onChange={handleTextChange}
                   placeholder="Paste your meeting notes or transcript here (e.g., 'Alice: Let's launch on Friday...')"
                   className={cn(
-                    "min-h-[400px] text-lg leading-relaxed resize-none p-10 rounded-[3rem] border-border focus:border-foreground/20 focus:ring-0 transition-all shadow-inner bg-white/30 placeholder:text-foreground/20 text-foreground pointer-events-auto",
+                    "min-h-[250px] md:min-h-[400px] text-base md:text-lg leading-relaxed resize-none p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border-border focus:border-foreground/20 focus:ring-0 transition-all shadow-inner bg-white/30 placeholder:text-foreground/20 text-foreground pointer-events-auto",
                     error ? 'border-destructive/30 ring-destructive/5' : ''
                   )}
                 />
